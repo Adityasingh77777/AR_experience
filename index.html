@@ -183,6 +183,22 @@
       installBar.style.display = 'none';
     }
 
+    // Hide install bar if app is already installed
+    function checkIfInstalled() {
+      // For most browsers
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        hideInstallBar();
+      }
+      // For iOS Safari
+      if (navigator.standalone) {
+        hideInstallBar();
+      }
+    }
+    window.addEventListener('DOMContentLoaded', checkIfInstalled);
+    window.addEventListener('appinstalled', () => {
+      hideInstallBar();
+    });
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
