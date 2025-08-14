@@ -151,6 +151,14 @@
   </style>
 </head>
 <body>
+  <div id="pwa-install-bar" style="display:none;position:fixed;top:0;left:0;width:100vw;z-index:9999;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.12);padding:0.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+    <div style="display:flex;align-items:center;gap:0.7rem;">
+      <img src="logo.jpg" alt="App Logo" style="width:32px;height:32px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+      <span style="font-weight:600;font-size:1.1rem;color:#222;">Install AR Experience</span>
+    </div>
+    <button id="pwa-install-btn" style="background:#7f00ff;color:#fff;border:none;border-radius:20px;padding:0.5rem 1.3rem;font-size:1rem;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,0.10);cursor:pointer;">Install</button>
+    <button id="pwa-install-close" style="background:none;border:none;font-size:1.5rem;color:#888;cursor:pointer;line-height:1;">&times;</button>
+  </div>
   <script>
     // Register service worker for PWA
     if ('serviceWorker' in navigator) {
@@ -164,24 +172,40 @@
     }
 
     let deferredPrompt;
+    const installBar = document.getElementById('pwa-install-bar');
+    const installBtn = document.getElementById('pwa-install-btn');
+    const closeBtn = document.getElementById('pwa-install-close');
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome's default mini-infobar
-  e.preventDefault();
-  deferredPrompt = e;
-
-  // Immediately show the prompt
-  deferredPrompt.prompt();
-
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
+    function showInstallBar() {
+      installBar.style.display = 'flex';
     }
-    deferredPrompt = null;
-  });
-});
+    function hideInstallBar() {
+      installBar.style.display = 'none';
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallBar();
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        hideInstallBar();
+        deferredPrompt = null;
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      hideInstallBar();
+    });
   </script>
   
   <div class="grid">
