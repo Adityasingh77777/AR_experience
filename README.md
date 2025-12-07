@@ -1,6 +1,8 @@
 # AliveFrame AR Experience (PWA)
 
-This project is an Augmented Reality (AR) web application built with A-Frame and MindAR, designed to run as a Progressive Web App (PWA). It allows users to scan a poster and view an AR video overlay, with a modern, mobile-friendly interface.
+This project is an Augmented Reality (AR) web application built with A-Frame and MindAR, 
+designed to run as a Progressive Web App (PWA). 
+It allows users to scan a poster and view an AR video overlay, with a modern, mobile-friendly interface.
 
 ## Features
 - Augmented Reality experience using MindAR and A-Frame
